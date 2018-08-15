@@ -27,6 +27,7 @@ do_xip_mapping_read(struct address_space *mapping,
 		    size_t len,
 		    loff_t *ppos)
 {
+	printk(KERN_INFO "Hello, world!/n");
 	struct inode *inode = mapping->host;
 	pgoff_t index, end_index;
 	unsigned long offset;
@@ -626,5 +627,5 @@ int pmfs_xip_file_mmap(struct file *file, struct vm_area_struct *vma)
 
 void test()
 {
-	printk("just a test");
+	printk(KERN_INFO "just a test"\n);
 }
