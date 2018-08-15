@@ -34,7 +34,6 @@ do_xip_mapping_read(struct address_space *mapping,
 		    size_t len,
 		    loff_t *ppos)
 {
-	printk(KERN_INFO "Hello, world!/n");
 	struct inode *inode = mapping->host;
 	pgoff_t index, end_index;
 	unsigned long offset;
@@ -126,7 +125,7 @@ out:
 ssize_t
 xip_file_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos)
 {
-	test();
+	//test();
 	if (!access_ok(VERIFY_WRITE, buf, len))
 		return -EFAULT;
 
@@ -142,6 +141,7 @@ xip_file_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos)
 ssize_t pmfs_xip_file_read(struct file *filp, char __user *buf,
 			    size_t len, loff_t *ppos)
 {
+	printk(KERN_INFO "Read work");
 	ssize_t res;
 	timing_t xip_read_time;
 
@@ -339,6 +339,7 @@ static inline void pmfs_clear_edge_blk (struct super_block *sb, struct
 ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
           size_t len, loff_t *ppos)
 {
+	printk(KERN_INFO "Write work");
 	struct address_space *mapping = filp->f_mapping;
 	struct inode    *inode = mapping->host;
 	struct super_block *sb = inode->i_sb;
