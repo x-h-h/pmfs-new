@@ -630,3 +630,4 @@ int test(void)
 	printk(KERN_INFO "just a test");
 	return 0;
 }
+printk(KERN_INFO "just a test");
