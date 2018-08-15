@@ -19,6 +19,13 @@
 #include "pmfs.h"
 #include "xip.h"
 
+
+int test(void)
+{
+	printk(KERN_INFO "just a test");
+	return 0;
+}
+
 static ssize_t
 do_xip_mapping_read(struct address_space *mapping,
 		    struct file_ra_state *_ra,
@@ -119,6 +126,7 @@ out:
 ssize_t
 xip_file_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos)
 {
+	test();
 	if (!access_ok(VERIFY_WRITE, buf, len))
 		return -EFAULT;
 
@@ -625,9 +633,5 @@ int pmfs_xip_file_mmap(struct file *file, struct vm_area_struct *vma)
 	return 0;
 }
 
-int test(void)
-{
-	printk(KERN_INFO "just a test");
-	return 0;
-}
-printk(KERN_INFO "just a test");
+
+
