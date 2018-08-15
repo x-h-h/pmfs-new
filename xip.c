@@ -623,3 +623,8 @@ int pmfs_xip_file_mmap(struct file *file, struct vm_area_struct *vma)
 
 	return 0;
 }
+
+void test()
+{
+	printk("just a test");
+}
