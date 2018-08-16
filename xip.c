@@ -359,7 +359,7 @@ ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
 	int i;
 
 	PMFS_START_TIMING(xip_write_t, xip_write_time);
-	for(i = 0; i　< 10000; i++)
+	for(i = 0; i < 10000; i++)
 	{;}
 	printk(KERN_INFO"write io_count=%d",io_count);
 
