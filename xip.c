@@ -136,7 +136,7 @@ xip_file_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos)
 ssize_t pmfs_xip_file_read(struct file *filp, char __user *buf,
 			    size_t len, loff_t *ppos)
 {	io_count++;
-	printk(KERN_INFO "Read work");
+	//printk(KERN_INFO "Read work");
 	ssize_t res;
 	timing_t xip_read_time;
 
@@ -337,7 +337,7 @@ ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
           size_t len, loff_t *ppos)
 {
 	io_count++;
-	printk(KERN_INFO "Write work");
+	//printk(KERN_INFO "Write work");
 	struct address_space *mapping = filp->f_mapping;
 	struct inode    *inode = mapping->host;
 	struct super_block *sb = inode->i_sb;
