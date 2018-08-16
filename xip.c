@@ -20,7 +20,7 @@
 #include "xip.h"
 
 
-ssize_t io_count = 0;
+int io_count = 0;
 static ssize_t
 do_xip_mapping_read(struct address_space *mapping,
 		    struct file_ra_state *_ra,
