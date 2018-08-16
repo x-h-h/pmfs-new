@@ -139,9 +139,13 @@ ssize_t pmfs_xip_file_read(struct file *filp, char __user *buf,
 	//printk(KERN_INFO "Read work");
 	ssize_t res;
 	timing_t xip_read_time;
+	int i;
 
 	PMFS_START_TIMING(xip_read_t, xip_read_time);
+	for(i = 0; i < 10000; i++)
+	{;}
 	printk(KERN_INFO"read io_count=%d",io_count);
+	
 //	rcu_read_lock();
 	res = xip_file_read(filp, buf, len, ppos);
 	
@@ -352,8 +356,11 @@ ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
 	unsigned long start_blk, end_blk, num_blocks, max_logentries;
 	bool same_block;
 	timing_t xip_write_time, xip_write_fast_time;
+	int i;
 
 	PMFS_START_TIMING(xip_write_t, xip_write_time);
+	for(i = 0; i　< 10000; i++)
+	{;}
 	printk(KERN_INFO"write io_count=%d",io_count);
 
 	sb_start_write(inode->i_sb);
