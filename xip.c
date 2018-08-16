@@ -18,44 +18,9 @@
 #include <asm/pgtable.h>
 #include "pmfs.h"
 #include "xip.h"
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/timer.h>
-struct timer_list timer;
 
-void timer_handler(unsigned long data) {
-    printk(KERN_INFO"timer pending:%d\n", timer_pending(&timer));
-    mod_timer(&timer, jiffies+msecs_to_jiffies(1000));
-    printk(KERN_INFO"jiffies:%ld, data:%ld\n", jiffies, data);
-}
-int timer_init(void) {
-	unsigned long test = 45;
-    printk(KERN_INFO"%s jiffies:%ld\n", __func__, jiffies);
-    printk(KERN_INFO"ji:%d,HZ:%d\n", jiffies_to_msecs(250), HZ);
-    init_timer(&timer);
-    timer.data = test;
-    timer.function = *timer_handler;
-    timer.expires = jiffies + HZ;
-    add_timer(&timer);
-    printk(KERN_INFO"timer pending:%d\n", timer_pending(&timer));
-    return 0;
-}
 
-void timer_exit(void) {
-    printk(KERN_INFO"%s jiffies:%ld\n", __func__, jiffies);
-    del_timer(&timer);
-}
-
-module_init(timer_init);
-module_exit(timer_exit);
-MODULE_LICENSE("GPL");
-
-int test(void)
-{
-	printk(KERN_INFO "just a test");
-	return 0;
-}
-
+ssize_t io_count = 0;
 static ssize_t
 do_xip_mapping_read(struct address_space *mapping,
 		    struct file_ra_state *_ra,
@@ -170,7 +135,7 @@ xip_file_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos)
  */
 ssize_t pmfs_xip_file_read(struct file *filp, char __user *buf,
 			    size_t len, loff_t *ppos)
-{
+{	io_count++;
 	printk(KERN_INFO "Read work");
 	ssize_t res;
 	timing_t xip_read_time;
@@ -178,8 +143,10 @@ ssize_t pmfs_xip_file_read(struct file *filp, char __user *buf,
 	PMFS_START_TIMING(xip_read_t, xip_read_time);
 //	rcu_read_lock();
 	res = xip_file_read(filp, buf, len, ppos);
+	printk(KERN_INFO"read io_count=%d",io_count);
 //	rcu_read_unlock();
 	PMFS_END_TIMING(xip_read_t, xip_read_time);
+	io_count--;
 	return res;
 }
 
@@ -369,6 +336,7 @@ static inline void pmfs_clear_edge_blk (struct super_block *sb, struct
 ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
           size_t len, loff_t *ppos)
 {
+	io_count++;
 	printk(KERN_INFO "Write work");
 	struct address_space *mapping = filp->f_mapping;
 	struct inode    *inode = mapping->host;
@@ -470,7 +438,9 @@ ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
 out:
 	inode_unlock(inode);
 	sb_end_write(inode->i_sb);
+	printk(KERN_INFO"write io_count=%d",io_count);
 	PMFS_END_TIMING(xip_write_t, xip_write_time);
+	io_count--;
 	return ret;
 }
 
