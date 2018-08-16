@@ -29,11 +29,12 @@ void timer_handler(unsigned long data) {
     printk(KERN_INFO"jiffies:%ld, data:%ld\n", jiffies, data);
 }
 int timer_init(void) {
+	unsigned long test = 45;
     printk(KERN_INFO"%s jiffies:%ld\n", __func__, jiffies);
     printk(KERN_INFO"ji:%d,HZ:%d\n", jiffies_to_msecs(250), HZ);
     init_timer(&timer);
-    timer.data = 45;
-    timer.function = timer_handler;
+    timer.data = test;
+    timer.function = *timer_handler;
     timer.expires = jiffies + HZ;
     add_timer(&timer);
     printk(KERN_INFO"timer pending:%d\n", timer_pending(&timer));
