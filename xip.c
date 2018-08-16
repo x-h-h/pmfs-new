@@ -141,9 +141,10 @@ ssize_t pmfs_xip_file_read(struct file *filp, char __user *buf,
 	timing_t xip_read_time;
 
 	PMFS_START_TIMING(xip_read_t, xip_read_time);
+	printk(KERN_INFO"read io_count=%d",io_count);
 //	rcu_read_lock();
 	res = xip_file_read(filp, buf, len, ppos);
-	printk(KERN_INFO"read io_count=%d",io_count);
+	
 //	rcu_read_unlock();
 	PMFS_END_TIMING(xip_read_t, xip_read_time);
 	io_count--;
@@ -353,6 +354,7 @@ ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
 	timing_t xip_write_time, xip_write_fast_time;
 
 	PMFS_START_TIMING(xip_write_t, xip_write_time);
+	printk(KERN_INFO"write io_count=%d",io_count);
 
 	sb_start_write(inode->i_sb);
 	inode_lock(inode);
@@ -438,7 +440,6 @@ ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
 out:
 	inode_unlock(inode);
 	sb_end_write(inode->i_sb);
-	printk(KERN_INFO"write io_count=%d",io_count);
 	PMFS_END_TIMING(xip_write_t, xip_write_time);
 	io_count--;
 	return ret;
