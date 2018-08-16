@@ -32,7 +32,7 @@ static void myfunc(unsigned long data)
 
 static int __init mytimer_init(void)
 {
-    setup_timer(&mytimer, myfunc, (unsigned long)"Hello, world!");
+    timer_setup(&mytimer, myfunc, (unsigned long)"Hello, world!");
     mytimer.expires = jiffies + HZ;
     add_timer(&mytimer);
     return 0;
@@ -40,7 +40,7 @@ static int __init mytimer_init(void)
 
 static void __exit mytimer_exit(void)
 {
-        del_timer(&mytimer);
+    del_timer(&mytimer);
 }
 
 int test(void)
