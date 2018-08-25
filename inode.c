@@ -342,6 +342,7 @@ unsigned int pmfs_free_inode_subtree(struct super_block *sb,
 		pmfs_free_block(sb, first_blocknr,PMFS_BLOCK_TYPE_4K);
 	}
 	PMFS_END_TIMING(free_tree_t, free_time);
+	printk(KERN_INFO "free inode subtree work");
 	return freed;
 }
 
@@ -969,6 +970,7 @@ static int pmfs_free_inode(struct inode *inode)
 	pmfs_dbg_verbose("free_inode: free_nodes %x total_nodes %x hint %x\n",
 		   sbi->s_free_inodes_count, sbi->s_inodes_count,
 		   sbi->s_free_inode_hint);
+	printk(KERN_INFO "free inode work");
 out:
 	mutex_unlock(&PMFS_SB(sb)->inode_table_mutex);
 	return err;
@@ -1014,6 +1016,7 @@ void pmfs_evict_inode(struct inode *inode)
 	timing_t evict_time;
 
 	PMFS_START_TIMING(evict_inode_t, evict_time);
+	printk(KERN_INFO "evict work");
 	if (!inode->i_nlink && !is_bad_inode(inode)) {
 		if (!(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode) ||
 			S_ISLNK(inode->i_mode)))
