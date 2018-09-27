@@ -229,7 +229,7 @@ static inline bool is_empty_meta_block(__le64 *node, unsigned int start_idx,
 	return true;
 }
 
-/* recursive_truncate_blocks: recursively deallocate a range of blocks from
+/* recursive_truncate_blocks: recursively(递归) deallocate a range of blocks from
  * first_blocknr to last_blocknr in the inode's btree.
  * Input:
  * block: points to the root of the b-tree where the blocks need to be allocated
@@ -325,12 +325,12 @@ unsigned int pmfs_free_inode_subtree(struct super_block *sb,
 	if (!root)
 		return 0;
 
-	PMFS_START_TIMING(free_tree_t, free_time);
+	PMFS_START_TIMING(free_tree_t, free_time);//释放节点
 	if (height == 0) {
 		first_blocknr = pmfs_get_blocknr(sb, le64_to_cpu(root),
 			btype);
-		pmfs_free_block(sb, first_blocknr, btype);
-		freed = 1;
+		pmfs_free_block(sb, first_blocknr, btype);//如果高度为0，释放块空间
+		freed = 1;//标记为已释放
 	} else {
 		first_blocknr = 0;
 
@@ -341,8 +341,8 @@ unsigned int pmfs_free_inode_subtree(struct super_block *sb,
 			PMFS_BLOCK_TYPE_4K);
 		pmfs_free_block(sb, first_blocknr,PMFS_BLOCK_TYPE_4K);
 	}
-	PMFS_END_TIMING(free_tree_t, free_time);
-	printk(KERN_INFO "free inode subtree work");
+	PMFS_END_TIMING(free_tree_t, free_time);//结束释放
+	printk(KERN_INFO "free inode subtree work");//only delete
 	return freed;
 }
 
@@ -970,7 +970,7 @@ static int pmfs_free_inode(struct inode *inode)
 	pmfs_dbg_verbose("free_inode: free_nodes %x total_nodes %x hint %x\n",
 		   sbi->s_free_inodes_count, sbi->s_inodes_count,
 		   sbi->s_free_inode_hint);
-	printk(KERN_INFO "free inode work");
+	//printk(KERN_INFO "free inode work");
 out:
 	mutex_unlock(&PMFS_SB(sb)->inode_table_mutex);
 	return err;
@@ -1016,7 +1016,7 @@ void pmfs_evict_inode(struct inode *inode)
 	timing_t evict_time;
 
 	PMFS_START_TIMING(evict_inode_t, evict_time);
-	printk(KERN_INFO "evict work");
+	//printk(KERN_INFO "evict work");
 	if (!inode->i_nlink && !is_bad_inode(inode)) {
 		if (!(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode) ||
 			S_ISLNK(inode->i_mode)))

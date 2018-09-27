@@ -62,7 +62,7 @@ void __pmfs_free_block(struct super_block *sb, unsigned long blocknr,
 	struct pmfs_blocknode *i;
 	struct pmfs_blocknode *free_blocknode= NULL;
 	struct pmfs_blocknode *curr_node;
-
+	//printk(KERN_INFO "free block");
 	num_blocks = pmfs_get_numblocks(btype);
 	new_block_low = blocknr;
 	new_block_high = blocknr + num_blocks - 1;
@@ -144,6 +144,7 @@ void pmfs_free_block(struct super_block *sb, unsigned long blocknr,
 {
 	struct pmfs_sb_info *sbi = PMFS_SB(sb);
 	mutex_lock(&sbi->s_lock);
+	printk(KERN_INFO "free block");
 	__pmfs_free_block(sb, blocknr, btype, NULL);
 	mutex_unlock(&sbi->s_lock);
 }
