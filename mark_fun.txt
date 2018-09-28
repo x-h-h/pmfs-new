@@ -1,0 +1,10 @@
+inode.c
+1316 pmfs_truncate_del
+1008 pmfs_evict_inode
+921 pmfs_free_inode
+438 __pmfs_truncate_blocks
+317 pmfs_free_inode_subtree
+241 recursive_truncate_blocks
+
+balloc.c
+142 pmfs_free_block
